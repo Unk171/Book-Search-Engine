@@ -42,7 +42,7 @@ const resolvers = {
       return { token, user };
     },
 
-    addBook: async (parent, { authors, description, bookId, image, link, title }, context) => {
+    saveBook: async (parent, { authors, description, bookId, image, link, title }, context) => {
       return User.create(
         { _id: context.user._id },
         {
@@ -54,10 +54,10 @@ const resolvers = {
         }
       );
     },
-    removeBook: async (parent, { bookId }, context) => {
+    removeBook: async (parent, { authors, description, bookId, image, link, title }, context) => {
       return User.findOneAndUpdate(
         { _id: context.user._id },
-        { $pull: { savedBooks: bookId } },
+        { $pull: { savedBooks: { authors, description, bookId, image, link, title } } },
         { new: true }
       );
     },
